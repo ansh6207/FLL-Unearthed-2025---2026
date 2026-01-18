@@ -1,0 +1,12 @@
+# Temp extraction folders
+*_source/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
