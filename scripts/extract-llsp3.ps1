@@ -8,14 +8,16 @@ param(
 
 Write-Host "Extracting Python code from LLSP3 files..." -ForegroundColor Green
 
+# Track which Python files should exist based on current LLSP3 files
+$expectedPyFiles = @{}
+
 $llsp3Files = Get-ChildItem -Path $RepoRoot -Filter "*.llsp3" -Recurse
 
 if ($llsp3Files.Count -eq 0) {
     Write-Host "No LLSP3 files found." -ForegroundColor Yellow
-    return
+} else {
+    Write-Host "Found $($llsp3Files.Count) LLSP3 file(s)" -ForegroundColor Cyan
 }
-
-Write-Host "Found $($llsp3Files.Count) LLSP3 file(s)" -ForegroundColor Cyan
 
 foreach ($file in $llsp3Files) {
     # Calculate relative path from repo root
@@ -58,7 +60,12 @@ foreach ($file in $llsp3Files) {
                     }
                     
                     New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
-                    Set-Content -Path (Join-Path $targetDir "$baseName.py") -Value $pythonCode -Encoding UTF8 -Force
+                    $pyFilePath = Join-Path $targetDir "$baseName.py"
+                    Set-Content -Path $pyFilePath -Value $pythonCode -Encoding UTF8 -Force
+                    
+                    # Track this expected Python file (for later cleanup of orphaned files)
+                    $expectedPyFiles[$pyFilePath] = $true
+                    
                     Write-Host "  Extracted: src/$relativePath/$baseName.py" -ForegroundColor Cyan
                 }
             }
@@ -74,6 +81,23 @@ foreach ($file in $llsp3Files) {
         # Clean up temp directory
         if (Test-Path $tempExtractDir) {
             Remove-Item $tempExtractDir -Recurse -Force
+        }
+    }
+}
+
+# Clean up orphaned Python files (files extracted from deleted LLSP3s)
+$srcDir = Join-Path $RepoRoot 'src'
+if (Test-Path $srcDir) {
+    $allPyFiles = Get-ChildItem -Path $srcDir -Filter "*.py" -Recurse
+    foreach ($pyFile in $allPyFiles) {
+        if (-not $expectedPyFiles.ContainsKey($pyFile.FullName)) {
+            try {
+                Remove-Item $pyFile.FullName -Force
+                Write-Host "  Deleted orphaned: $($pyFile.FullName.Substring($RepoRoot.Length + 1))" -ForegroundColor Yellow
+            }
+            catch {
+                Write-Host "  Warning: Could not delete $($pyFile.Name): $($_.Exception.Message)" -ForegroundColor Yellow
+            }
         }
     }
 }
