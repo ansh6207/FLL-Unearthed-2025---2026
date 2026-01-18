@@ -162,6 +162,8 @@ def main():                                        # this is the main function. 
 
     turn_right(100, 0.25) # just in case, turn right
 
+    turn_left(100, 0.1) # just in case, turn right
+
     left_lift.run(-95, 60, accuracy_override=1, close_degrees_override=80, close_speed_override=8)
 
     time.sleep(0.3) # motor wait
@@ -188,19 +190,19 @@ def main():                                        # this is the main function. 
 
     gyro_drive('s', target=33, speed=40) # move to revel one part of map
 
-    left_lift.run(-102, 40, accuracy_override=5, close_degrees_override=80, close_speed_override=8, async_op=True) # puts arm up
+    left_lift.run(-103, 60, accuracy_override=1, close_degrees_override=80, close_speed_override=8, async_op=True) # puts arm up
 
     #spinny.spin_multi_motors([left_lift])
 
     gyro_drive('d', target=26, speed=40, spinny_list=[left_lift])
 
-    gyro_spin_to_angle(242)
+    gyro_spin_to_angle(244)
 
-    gyro_drive('d', target=3.5, speed=40)
+    gyro_drive('d', target=3, speed=40)
 
     time.sleep(0.3)
 
-    left_lift.run(70, 5, accuracy_override=5, close_degrees_override=80, close_speed_override=8) # puts arm up slowly
+    left_lift.run(0.1, 5, accuracy_override=5, close_degrees_override=80, close_speed_override=8, stop_mode_override=motor.BRAKE) # puts arm up slowly
 
     
     
