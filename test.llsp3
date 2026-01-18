@@ -1,0 +1,1 @@
+{"projectName":"Test Project","description":"Test LLSP3 file for sync validation","python":"#!/usr/bin/env python3\n# Test Python Code\nimport time\n\ndef hello_world():\n    print('Hello from test.llsp3')\n    return 'Test execution successful'\n\nif __name__ == '__main__':\n    result = hello_world()\n    print(f'Result: {result}')\n    time.sleep(1)\n"}
