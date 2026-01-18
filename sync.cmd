@@ -26,17 +26,10 @@ echo FLL GitHub Sync - %DEVICE_NAME%
 echo ============================================
 echo.
 
-REM Check if any LLSP3 files have changed
-git diff --name-only HEAD | findstr /i "\.llsp3$" >nul 2>&1
-if not errorlevel 1 (
-    REM LLSP3 files have changed, extract Python code
-    echo Extracting Python code from modified LLSP3 files...
-    powershell -NoProfile -ExecutionPolicy Bypass -Command "& '%~dp0scripts\extract-llsp3.ps1' -RepoRoot '%cd%'"
-    echo.
-) else (
-    echo No changes to LLSP3 files detected, skipping extraction.
-    echo.
-)
+REM Always run extraction to keep extracted Python code in sync with LLSP3 files
+echo Extracting Python code from LLSP3 files...
+powershell -NoProfile -ExecutionPolicy Bypass -Command "& '%~dp0scripts\extract-llsp3.ps1' -RepoRoot '%cd%'"
+echo.
 
 REM Fetch latest changes from remote
 git fetch origin
