@@ -73,7 +73,7 @@ if errorlevel 1 (
         echo - Branch created: %BRANCH_NAME%
         echo - Push to GitHub to create a Pull Request
         echo - Please review and manually merge conflicts
-        echo - Visit: https://github.com/ansh6207/FLL-Unearthed-2025---2026/%BRANCH_NAME%
+        echo - Visit: https://github.com/ansh6207/FLL-Unearthed-2025---2026/tree/%BRANCH_NAME%
     )
 ) else (
     echo No new local changes to commit.
