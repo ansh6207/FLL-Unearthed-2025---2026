@@ -96,7 +96,7 @@ def main():                                         # this is the main function.
     # if you need to power single motor you can 
     # create versions of the spinny motor class
     #################################################
-    right_spin = spinny('RTSP', port.D, 230,        # name, motor port, max_deg, all required
+    right_spin = spinny('RTSP', port.D, 235,        # name, motor port, max_deg, all required
             motor_velocity.SPIKE_LARGE_MOTOR,       # max_vel(osity) required  
                                                     # Optional settings, defaulted as shown
             accuracy=1,                             # How close to target is good? range is -1,0,1
