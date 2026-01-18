@@ -113,13 +113,13 @@ def main():                                        # this is the main function. 
             close_speed=10)                        # What speed to use when close.
                                                     # using default on all other options.
 
-    left_lift = spinny('LFLT', port.C, 104,        # name, motor port, max_deg, all required
+    left_lift = spinny('LFLT', port.C, 200,        # name, motor port, max_deg, all required
             motor_velocity.SPIKE_LARGE_MOTOR,    # max_vel(osity) required
                                                     # Optional settings, defaulted as shown
             accuracy=1,                            # How close to target is good? range is -1,0,1
             stop_mode=motor.SMART_BRAKE,            # What to do when you stop the motor.
-            close_degrees=5,                    # How close to target do we go slow for accuracy.
-            close_speed=10)                        # What speed to use when close.
+            close_degrees=80,                    # How close to target do we go slow for accuracy.
+            close_speed=60)                        # What speed to use when close.
                                                     # using default on all other options.
 
 
@@ -141,68 +141,33 @@ def main():                                        # this is the main function. 
     # Right = Up
     # Left = Down
 
-    move_backward(515, 1.5) # move towards mission 1 and completes 1/3 of it
+    move_backward(510, 1.5)
 
-    move_forward(600, 0.8) # completes other 1/3 of mission 1
+    move_forward(600, 0.8)
 
-    move_backward(600, 0.6) # just in case first soil deposit doesn't work
+    move_backward(600, 0.6)
 
-    backwards_left(455, 1.43) # turn towards mission 2
+    backwards_left(455, 1.45)
 
-    gyro_spin_to_angle(140)
+    left_lift.run(-50,50,close_degrees_override=1, accuracy_override=1)
 
-    left_lift.run(-102, 60, accuracy_override=1, close_degrees_override=80, close_speed_override=8) # puts arm down
+    gyro_drive('d', target=15, speed=60)
 
-    time.sleep(0.3)
-
-    #spinny.spin_multi_motors([left_lift])
-    gyro_drive('d', target=16, speed=65) # move to revel one part of map
-
-    time.sleep(0.3)
-
-    turn_right(100, 0.25) # just in case, turn right
-
-    left_lift.run(-95, 60, accuracy_override=1, close_degrees_override=80, close_speed_override=8)
-
-    time.sleep(0.3) # motor wait
+    left_lift.run(-40,10, close_degrees_override=1, accuracy_override=1)
     
-    gyro_spin_to_angle(163) # turn to go over to position over the sliding garden
+    turn_right(300, 0.3)
 
-    left_lift.run(-100, 50, accuracy_override=1, close_degrees_override=80, close_speed_override=8) # puts arm down
+    left_lift.run(-45,40,close_degrees_override=1, accuracy_override=1)
 
-    time.sleep(0.3)
+    time.sleep(1)
 
-    gyro_drive('d', target=4, speed=10) # revels other part of map
+    move_forward(300, 0.4)
 
-    left_lift.run(-90, 50, accuracy_override=1, close_degrees_override=80, close_speed_override=8) # puts arm up
+    left_lift.run(-50, 40, close_degrees_override=1, accuracy_override=1)
 
-    time.sleep(0.3)
+    move_backward(400, 1)
 
-    gyro_spin_to_angle(180) #colect garden
-
-    move_backward(400, 0.3)
-    
-    gyro_drive('s', target=76, speed=65) # move to revel one part of map
-
-    gyro_spin_to_angle(270)
-
-    gyro_drive('s', target=33, speed=40) # move to revel one part of map
-
-    left_lift.run(-102, 40, accuracy_override=5, close_degrees_override=80, close_speed_override=8, async_op=True) # puts arm up
-
-    #spinny.spin_multi_motors([left_lift])
-
-    gyro_drive('d', target=26, speed=40, spinny_list=[left_lift])
-
-    gyro_spin_to_angle(242)
-
-    gyro_drive('d', target=3.5, speed=40)
-
-    time.sleep(0.3)
-
-    left_lift.run(70, 5, accuracy_override=5, close_degrees_override=80, close_speed_override=8) # puts arm up slowly
-
-    
+    left_lift.run(-40, 40, close_degrees_override=1, accuracy_override=1)
     
 
     #time.sleep(2)

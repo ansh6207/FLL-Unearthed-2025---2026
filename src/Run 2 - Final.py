@@ -71,7 +71,7 @@ def main():                                         # this is the main function.
                                 port.E,             # measure motor port, normally drives forward
                 motor_velocity.SPIKE_MEDIUM_MOTOR)   # motors max velocity, Knowledge Base 
     
-    Drive.logging_level = log_level.ALL             # will shut off logging, more to coem about my logging
+    Drive.logging_level = log_level.OFF             # will shut off logging, more to coem about my logging
     Drive.log_source_filter = ''                    # defined a lof handle filter, '' is no filter. 
 
     #Drive.use_linegraph = True                     # True turns on plotting if movement support this
@@ -131,7 +131,7 @@ def main():                                         # this is the main function.
     # functions. They are defined below the main method
 
     # Code for 1st Mission
-    gyro_drive('s', target=72, speed=45)
+    gyro_drive('s', target=73, speed=45)
 
     # Doing 1st Mission
     Drive.spin_far_speed = 66
@@ -140,7 +140,7 @@ def main():                                         # this is the main function.
 
     # Code for 2nd Mission
 
-    move_forward_duration(500, 0.2)
+    move_forward_duration(500, 0.15)
 
     turn_left(500, 0.3)
 
@@ -156,19 +156,28 @@ def main():                                         # this is the main function.
 
     move_forward_duration(300, 0.3)
 
-    turn_right(1050, 0.4)
+    turn_right(950, 0.4)
 
-    turn_left(1050, 0.6)
-
-    turn_right(1050, 0.2)
+    sleep(0.5)
 
     right_extension(300, 0.35)
 
-    move_forward_duration(-300, 0.35)
+    move_forward_duration(-500, 0.2)
 
-    backwards_left(300, 1.6)
+    backwards_left(300, 1.25)
 
-    move_forward_duration(-300, 0.2)
+    # gyro_spin_to_angle(140)
+
+    move_forward_duration(300, 0.5)
+
+    Silo()
+    Silo()
+    Silo()
+    Silo()
+
+    turn_right(300, 0.35)
+
+    move_forward_duration(1050, 1)
     
     #sleep(2)
     # in this case we want the arms to move while
@@ -334,6 +343,13 @@ def m4_the_coup_de_grace():
     pass
 
 
+def Silo():
+    left_extention(-750, 0.2)
+    sleep(0.3)
+    left_extention(300, 0.2)
+    sleep(0.4)
+
+
 
 #################################################
 # Gyro Drive classes, settings and functions
@@ -426,7 +442,7 @@ class gyro_drive_settings():
     spin_near_speed     = 5                     # when range is <= spin_far_range near, spin slow
 
                                                 # stop at within spin_accuracy 
-    spin_accuracy       = 2.0                   # we are on target+/- this accuracy
+    spin_accuracy       = 1.0                   # we are on target+/- this accuracy
                                                 # the robot has momentum and robot can't stop
                                                 # on a dime so we make accuracy wide.
                                                 # This gives the code time to stop the spin
@@ -498,7 +514,7 @@ class gyro_drive_settings():
 #################################################
 
 
-def gyro_drive( drive_by,                            # d = distance, t = time (sec), s = sonar
+def gyro_drive( drive_by,                            # d = distance (cm), t = time (sec), s = sonar (Distance Sensor)
                 target,                                # distance or time
                 speed,                                # % of power +/- 10 to 100
                 request_angle = None,                # angle to follow +/- 540. See get_yaw
