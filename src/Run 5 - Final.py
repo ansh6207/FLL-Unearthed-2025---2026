@@ -80,7 +80,7 @@ def main():                                        # this is the main function. 
                 motor_velocity.SPIKE_MEDIUM_MOTOR)# motors max velocity, Knowledge Base
 
     Drive.logging_level = log_level.ALL            # will shut off logging, more to coem about my logging
-    Drive.log_source_filter = 'LFLT'                    # defined a lof handle filter, '' is no filter.
+    Drive.log_source_filter = ''                    # defined a lof handle filter, '' is no filter.
 
     #Drive.use_linegraph = True                    # True turns on plotting if movement support this
     if Drive.use_linegraph == True:                # What does this say? easy to understand.
@@ -148,39 +148,46 @@ def main():                                        # this is the main function. 
     move_backward(600, 0.6) # just in case first soil deposit doesn't work
 
     backwards_left(455, 1.43) # turn towards mission 2
+    # gyro_drive('d', target=32, speed=-80, request_angle=130)
 
-    left_lift.run(-50,50,close_degrees_override=1, accuracy_override=1) # puts arm down
+    left_lift.run(-95, 50, close_degrees_override=15, accuracy_override=1) # puts arm down
 
     gyro_drive('d', target=15, speed=65) # move to revel one part of map
 
-    turn_right(100, 0.2)
-
-    left_lift.run(-85,10, close_degrees_override=1, accuracy_override=1) # lifts arm up
+    left_lift.run(-90, 60, close_degrees_override=15, accuracy_override=1) # lifts arm up
     
-    turn_right(300, 0.2) # positioning to do second part of mission 2
+    gyro_spin_to_angle(160)
 
-    move_backward(200, 0.3) # makes sure it hits mission 2 platform
+    # turn_right(100, 0.2)
+    
+    
+    # turn_right(300, 0.2) # positioning to do second part of mission 2
 
-    left_lift.run(-90, 40,close_degrees_override=1, accuracy_override=1) # puts arm down
+    # move_backward(200, 0.3) # makes sure it hits mission 2 platform
 
-    move_forward(300, 0.4) # revels other part of map
+    left_lift.run(-94, 20,close_degrees_override=15, accuracy_override=1, async_op=True) # puts arm down
 
-    #left_lift.run(-45, 40, close_degrees_override=1, accuracy_override=1) # puts arm up
+    gyro_drive('d', target=5, speed=10, spinny_list=[left_lift]) # revels other part of map
 
-    move_backward(400, 0.3)
+    left_lift.run(-90, 40, close_degrees_override=15, accuracy_override=1, async_op=True) # puts arm up
 
-    #turn_right(400, 0.4) # revels third part of map
+    # move_backward(400, 0.3)
 
-    turn_right(300, 2.8)
+    gyro_drive('d', target=5, speed=-65, request_angle=180, spinny_list=[left_lift]) # move to revel one part of map
 
-    #Drive.distance_sensor_accuracy = 0.1
-    #Drive.pass_count = 1
 
-    move_forward(400, 0.83)
+    # #turn_right(400, 0.4) # revels third part of map
 
-    gyro_spin_to_angle(-95)
+    # turn_right(300, 2.8)
 
-    left_attachment(-100, 2.5)
+    # #Drive.distance_sensor_accuracy = 0.1
+    # #Drive.pass_count = 1
+
+    # move_forward(400, 0.83)
+
+    # gyro_spin_to_angle(-95)
+
+    # left_attachment(-100, 2.5)
 
     #move_backward(400, 1)
 
