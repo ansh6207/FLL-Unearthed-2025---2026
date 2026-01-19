@@ -49,11 +49,7 @@ if errorlevel 1 (
     
     REM Check if merge resulted in conflicts
     git diff --name-only --diff-filter=U >nul 2>&1
-    if errorlevel 1 (
-        REM No conflicts - push to main
-        echo No conflicts detected. Pushing to main...
-        git push origin main
-    ) else (
+    if errorlevel 0 (
         REM Conflicts detected - create branch and PR
         echo Merge conflicts detected!
         echo Creating branch %BRANCH_NAME% for manual review...
@@ -74,13 +70,17 @@ if errorlevel 1 (
         echo - Push to GitHub to create a Pull Request
         echo - Please review and manually merge conflicts
         echo - Visit: https://github.com/ansh6207/FLL-Unearthed-2025---2026/tree/%BRANCH_NAME%
+    ) else (
+        REM No conflicts - push to main directly
+        echo No conflicts detected. Pushing to main...
+        git push origin main
     )
 ) else (
     echo No new local changes to commit.
     
     REM However, check if branch is ahead of origin and push if needed
     git rev-list --count origin/main..HEAD >nul 2>&1
-    if errorlevel 1 (
+    if not errorlevel 1 (
         echo Your branch is ahead of origin/main. Pushing commits...
         git push origin main
     )
