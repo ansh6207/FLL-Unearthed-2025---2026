@@ -190,7 +190,7 @@ def main():                                        # this is the main function. 
 
     gyro_drive('s', target=33, speed=40) # move to revel one part of map
 
-    left_lift.run(-103, 60, accuracy_override=1, close_degrees_override=80, close_speed_override=8, async_op=True) # puts arm up
+    left_lift.run(-103, 50, accuracy_override=1, close_degrees_override=80, close_speed_override=8, async_op=True) # puts arm up
 
     #spinny.spin_multi_motors([left_lift])
 
