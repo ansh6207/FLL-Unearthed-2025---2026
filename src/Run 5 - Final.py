@@ -117,6 +117,7 @@ def main():                                        # this is the main function. 
     # functions. They are defined below the main method
 
     move_backward(515, 1.5) # move towards mission 1 and completes 1/3 of it
+    #gyro_drive('d', target=41, speed=-100, request_angle=0)
 
     move_forward(600, 0.8) # completes other 1/3 of mission 1
 
@@ -130,15 +131,15 @@ def main():                                        # this is the main function. 
 
     time.sleep(SLEEP_MOTOR)
 
-    gyro_drive('d', target=16, speed=65) # move to revel one part of map
+    gyro_drive('d', 16) # move to revel one part of map
 
     time.sleep(SLEEP_MOTOR)
 
-    turn_right(100, 0.25) # just in case, turn right
+    turn_right(100, 0.29) # just in case, turn right
 
-    turn_left(100, 0.1) # just in case, turn right
+    turn_left(100, 0.2) # just in case, turn right
 
-    left_lift.run(-95, 60, accuracy_override=1, close_degrees_override=80, close_speed_override=8)
+    left_lift.run(-90, 60, accuracy_override=1, close_degrees_override=80, close_speed_override=8)
 
     time.sleep(SLEEP_MOTOR) # motor wait
     
@@ -148,7 +149,7 @@ def main():                                        # this is the main function. 
 
     time.sleep(SLEEP_MOTOR)
 
-    gyro_drive('d', target=4, speed=10) # revels other part of map
+    gyro_drive('d', target=4.5, speed=10) # revels other part of map
 
     left_lift.run(-90, 50, accuracy_override=1, close_degrees_override=80, close_speed_override=8) # puts arm up
 
@@ -172,11 +173,11 @@ def main():                                        # this is the main function. 
 
     gyro_spin_to_angle(244)
 
-    gyro_drive('d', target=3, speed=40)
+    gyro_drive('d', target=3.4, speed=40)
 
     time.sleep(SLEEP_MOTOR)
 
-    left_lift.run(0.1, 5, accuracy_override=5, close_degrees_override=80, close_speed_override=8, stop_mode_override=motor.BRAKE) # puts arm up slowly
+    left_lift.run(-5, 5, accuracy_override=5, close_degrees_override=80, close_speed_override=8, stop_mode_override=motor.BRAKE) # puts arm up slowly
 
     exit(0)
 
@@ -346,9 +347,9 @@ class gyro_drive_settings():
     color_sensor_port    = -1                # must be set when using color sensor
 
     # test these spin settings to fit your robot.
-    spin_far_range    = 25                    # degrees from target where we spin fast
-    spin_far_speed    = 20                    # when range is > spin_far_range, spin faster
-    spin_near_speed    = 5                    # when range is <= spin_far_range near, spin slow
+    spin_far_range    = 30                    # degrees from target where we spin fast
+    spin_far_speed    = 35                    # when range is > spin_far_range, spin faster
+    spin_near_speed    = 8                    # when range is <= spin_far_range near, spin slow
 
                                                 # stop at within spin_accuracy
     spin_accuracy    = 2.0                # we are on target+/- this accuracy
@@ -361,17 +362,17 @@ class gyro_drive_settings():
     # speed defaults - experimant on your design.
     # you do not need to use these
     # just here as suggestions.
-    default_speed        = 60                    # you set to what you want.
+    default_speed        = 70                    # you set to what you want.
                                                 # use Drive.default_speed in functions to use this
     default_rev_speed= default_speed        # determine this by testing.
 
-    min_speed            = 10                    # minimum drive speed so we don't get stuck
+    min_speed            = 12                    # minimum drive speed so we don't get stuck
                                                 # gyro_drive asks for speed. As we get close
                                                 # the speed man be very low. This will be the
                                                 # minimum. Hey, robot has to move, right!!!
                                                 # speed is 0 to 100 percent of max velocity.
 
-    settle_time        = .30                    # once we reach the target, pause to let the robot settle
+    settle_time        = .20                    # once we reach the target, pause to let the robot settle
                                                 # a heavier robot may need a little more time
 
     # gyro yaw settings
@@ -380,7 +381,7 @@ class gyro_drive_settings():
                                                 # you need to be careful around +/- 540
 
 
-    yaw_adjust        =.5                # A multiplier to adjust your motors to move back to the
+    yaw_adjust        =.7                # A multiplier to adjust your motors to move back to the
                                                 # gyro heading when we are using the gyro.
                                                 #.5 one half of correction, gentle nudge works best
                                                 # 1.0 is no additional adjustment, correction is applied as is
@@ -391,10 +392,10 @@ class gyro_drive_settings():
                                                 # Google: overcorrection
 
     # acceleration parameters
-    accel_ramp_up_dist_pct= .18            # this is multipled by speed to figure out
+    accel_ramp_up_dist_pct= .12            # this is multipled by speed to figure out
                                                 # how large to make the ramp up and down distance.
 
-    accel_min_ramp_up_dist= 2.0            # minimum ramp up distance. 2.0 cm is 4/5 of an inch.
+    accel_min_ramp_up_dist= 1.5            # minimum ramp up distance. 2.0 cm is 4/5 of an inch.
 
 
 
@@ -424,10 +425,10 @@ class gyro_drive_settings():
 
 
 def gyro_drive( drive_by,                            # d = distance, t = time (sec), s = sonar
-                target,                                # distance or time
-                speed,                                # % of power +/- 10 to 100
+                target,                              # distance or time
+                speed = 70,         # % of power +/- 10 to 100
                 request_angle = None,                # angle to follow +/- 540. See get_yaw
-                                                        # if None, gyro correction and turn_first are ignored
+                                                     # if None, gyro correction and turn_first are ignored
 
                 timeout=None,                        # time sec to stop is not completed.
                 waypoint = None,                        # color to look for. Will stop at the color.
