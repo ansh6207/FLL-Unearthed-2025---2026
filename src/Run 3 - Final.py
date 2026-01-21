@@ -80,16 +80,7 @@ def main():                                         # this is the main function.
 
     motor_pair.pair(Drive.motor_pair_id,            # Drive motors are assigned to motor_pair
                     Drive.motor_port_left,          # we use motor_pair on our drive motors
-                    Drive.motor_port_right)         # with this we can start and stop them together.
-
-                                                    # Tests Remove or comment out when done testing
-    #tests = gyro_drive_tests(speed=100, loops=1)            # on a new line type tests. to see the available tests
-    #tests.yaw_demo(180)                             # turn robot to see yaw and correction.
-    #tests.yaw_test_graph()                         # look to presentations for all available tests
-    #tests.drive_torture_test()
-    #return  # uncomment to stop here                # program will stop here, comment out when done
-    #tests.drive_test_rectangle()
-    #return                                         
+                    Drive.motor_port_right)         # with this we can start and stop them together.                                      
     
 
     #################################################
@@ -130,22 +121,24 @@ def main():                                         # this is the main function.
     # these are just the calls, to your customized
     # functions. They are defined below the main method
 
-    gyro_drive('s', target=100, speed=40)
-    gyro_spin_to_angle(-91)
-    gyro_drive('s', target=82, speed=10, timeout=2)
+    gyro_drive('s', target=101, speed=80, request_angle=0)
+    # gyro_spin_to_angle(-91)
+    gyro_drive('s', target=82, speed=10, timeout=2, request_angle=-91)
 
     turn_left(200, 0.25)
     right_extension(700, 4)
     
-    move_forward(-500, 0.15)
-    gyro_spin_to_angle(47)
+    #move_forward(-500, 0.15)
+    gyro_drive('t', target=0.15, speed=-50)
+
+    #gyro_spin_to_angle(47)
 
     #turn_right(400, 1.685)
     left_lift.run(-100, async_op=True)
     
     
     
-    gyro_drive('d', 30, 30,                            # set drive parameters
+    gyro_drive('d', 30, 30, request_angle=46,                           # set drive parameters
         spinny_list= [left_lift] )        # and pass a list of spinnys
     #log( log_level.START , 'LFLT', "| Left lift demo started..." )
     
@@ -284,29 +277,6 @@ def move_forward(speed, distance):
     motor.stop(port.E)
 
 
-def m1_Attack_the_left():
-    #global Drive, front_lift
-    front_lift.run(50,100, async_op=True)
-    gyro_drive('d', 70, 80, 0)    
-    gyro_spin_to_angle(45)
-    front_lift.run(23,100)      # lift to 50% at speed 10%
-    sleep(1)
-    gyro_spin_to_angle(-13)     # hit the rocks and flippy garden
-    front_lift.run(0,90)        # lift to 50% at speed 10%
-    gyro_spin_to_angle(-55)     # hit objects
-
-    gyro_drive('d', 10, 50)     # move forward to avoid object on the left
-    gyro_spin_to_angle(-90)
-    
-    gyro_drive('d', 73, 90)     # drive to mining tower
-    gyro_spin_to_angle(-55)     # turn to tower
-    front_lift.run(85,10)       # slowly lift the arm
-    sleep(2)
-    front_lift.run(0,100)       # drop lift down
-    gyro_drive('d', 30,  80, -90)
-    gyro_drive('d', 50, 100, -135)
-
-
 
 
 def m2_go_for_the_center():
@@ -443,7 +413,7 @@ class gyro_drive_settings():
                                                  # you need to be careful around +/- 540
 
 
-    yaw_adjust           =  .5                   # A multiplier to adjust your motors to move back to the
+    yaw_adjust           =  .75                  # A multiplier to adjust your motors to move back to the
                                                  # gyro heading when we are using the gyro. 
                                                  #  .5 one half of correction, gentle nudge works best
                                                  # 1.0 is no additional adjustment, correction is applied as is 
@@ -726,9 +696,21 @@ def gyro_drive( drive_by,                            # d = distance, t = time (s
         elif drive_by == 's':
             current_reading = \
                 distance_sensor.distance(
-                        Drive.distance_sensor_port) * .1    # distance comes in as integer milimeters
-                                                            # mult by .1 changes it to float centimeters
+                        Drive.distance_sensor_port) * .1
+
             closing_speed = speed
+
+            # Two-speed approach: fast then slow
+            slow_down_distance = 15# Switch to slow speed 15cm before target
+            slow_speed = 25# Speed when close to target
+
+            distance_to_target = abs(current_reading - target)
+
+            if distance_to_target < slow_down_distance:
+                closing_speed = slow_speed# Use lower speed
+
+            # Rest of your code continues...
+
 
             log(log_level.STEP,
                 'GYDR', " | Done",
