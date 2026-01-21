@@ -85,8 +85,8 @@ left_attachment(300, 0.5)
 
 # Coming Home
 
-move_backward(1000, 1.2)
+move_backward(1000, 0.8)
 
 turn_left(900, 0.3)
 
-move_backward(1000, 0.8)
+move_backward(1000, 0.5)
