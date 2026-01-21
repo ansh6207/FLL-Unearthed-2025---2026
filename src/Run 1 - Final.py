@@ -90,7 +90,7 @@ def main():                                        # this is the main function. 
             close_speed=60)                        # What speed to use when close.
                                                     # using default on all other options.
 
-    right_lift = spinny('LFLT', port.D, 540,        # name, motor port, max_deg, all required
+    right_lift = spinny('RGLT', port.D, 203,        # name, motor port, max_deg, all required
             motor_velocity.SPIKE_LARGE_MOTOR,    # max_vel(osity) required
                                                     # Optional settings, defaulted as shown
             accuracy=10,                            # How close to target is good? range is -1,0,1
@@ -111,22 +111,27 @@ def main():                                        # this is the main function. 
     Drive.pass_count = 1
 
     # Driving Forward From Blue Home
-    gyro_drive('s', target=37, speed=40)
+    gyro_drive('s', target=37, speed=50, request_angle=0)
 
     # Turning Towards Mission 9
-    gyro_spin_to_angle(51)
+    # gyro_spin_to_angle(51)
 
     # Going Forwards Toward Mission 9 To Do 1st Part
-    gyro_drive('d', target=32, speed=40)
+    gyro_drive('d', target=31, speed=70, request_angle=49)
 
     # Doing First Part Of Mission 9
-    gyro_spin_to_angle(-44)
+    gyro_spin_to_angle(-11)
+
+    # Bringing Arm Up A Bit
+    left_lift.run(95, speed=60)
 
     # Sleeping And Turning Back To Face Roof (Part 2) Of Mission 9
-    time.sleep(0.2)
+    #sleep(0.2)
     gyro_spin_to_angle(47)
 
     # Move Extension Down For Doing Part 2 Of Mission 9
+    #right_lift.run(95, speed=50, accuracy_override=1, close_degrees_override=80, close_speed_override=8)
+
     right_extension(300, 0.62)
 
     # Sleep (NESSECARRY)
@@ -135,35 +140,41 @@ def main():                                        # this is the main function. 
     # Doing Backwards To Raise The Roof
     move_forward_duration(-300, 1)
 
+    # Specifiying The Arm To Move Up (Async)
+
+    #right_lift.run(-95, speed=50, accuracy_override=1, close_degrees_override=80, close_speed_override=8, async_op=True)
+
     # Moving Forward A Bit To Not Break The Mission
+    #gyro_drive('d', target=4, speed=70, spinny_list=[right_lift])
     move_forward_duration(300, 0.5)
 
     # Move Extension Back Up From Doing Part 2 Of Mission 9
     right_extension(-300, 0.62)
 
     # Unknown
-    move_forward_duration(-300, 0.5)
+    gyro_drive('d', target=5, speed=-50)
+    #move_forward_duration(-300, 0.5)
 
     # Turn For Next Mission 10
     gyro_spin_to_angle(-19)
 
     # Move Left Extension Up
-    left_lift.run(95, async_op=True)
+    #left_lift.run(95, async_op=True)
     #spinny.spin_multi_motors(motor_list=[left_lift])
 
     # Moving Forwards Toward Mission 10
-    gyro_drive('d', target=40, speed=60, spinny_list=[left_lift])
+    gyro_drive('d', target=40, speed=60)
 
     # Aligned To Face Mission 10
-    gyro_spin_to_angle(90)
+    gyro_spin_to_angle(95)
 
     # Move Extension Down For Mission 10 Part 1
     right_extension(300, 0.5)
 
     # Going Into Mission 10
-    gyro_drive('d', target=11, speed=60)
+    gyro_drive('d', target=10, speed=60)
     right_extension(300, 0.2)
-    move_forward_duration(-300, 0.085)
+    move_forward_duration(-300, 0.12)
 
     # Define The Movement For Moving Both Extensions Down And Doing Both Parts Of Mission 10
     left_lift.run(-10)

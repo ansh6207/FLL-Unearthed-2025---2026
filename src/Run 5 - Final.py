@@ -171,13 +171,15 @@ def main():                                        # this is the main function. 
 
     gyro_drive('d', target=26, speed=40, spinny_list=[left_lift])
 
-    gyro_spin_to_angle(244)
+    gyro_spin_to_angle(243)
 
-    gyro_drive('d', target=3.4, speed=40)
+    gyro_drive('d', target=3.45, speed=40)
 
     time.sleep(SLEEP_MOTOR)
 
-    left_lift.run(-5, 5, accuracy_override=5, close_degrees_override=80, close_speed_override=8, stop_mode_override=motor.BRAKE) # puts arm up slowly
+    left_attachment(-100, 0.7)
+    
+    #left_lift.run(-5, 5, accuracy_override=5, close_degrees_override=80, close_speed_override=8, stop_mode_override=motor.BRAKE) # puts arm up slowly
 
     exit(0)
 

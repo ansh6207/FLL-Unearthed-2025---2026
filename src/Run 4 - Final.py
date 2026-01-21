@@ -49,6 +49,16 @@ def move_extension_up(speed, duration):
     time.sleep(duration)
     motor.stop(port.C)
 
+def right_attachment(speed, duration):
+    motor.run(port.D, speed)
+    time.sleep(duration)
+    motor.stop(port.D)
+
+def left_attachment(speed, duration):
+    motor.run(port.D, -speed)
+    time.sleep(duration)
+    motor.stop(port.D)
+
 #Mission Code
 
 move_forward(600, 1.2)
@@ -65,11 +75,13 @@ turn_left(300, 0.55)
 
 move_extension_up(300, 0.35)
 
-move_forward(270, 1.2)
+move_forward(270, 1.25)
 
 turn_right(300, 0.3)
 
 move_forward(300, 2)
+
+left_attachment(300, 0.5)
 
 # Coming Home
 
