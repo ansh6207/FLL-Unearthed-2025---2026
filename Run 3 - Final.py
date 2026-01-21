@@ -71,7 +71,7 @@ def main():                                         # this is the main function.
                                 port.E,             # measure motor port, normally drives forward
                 motor_velocity.SPIKE_MEDIUM_MOTOR)   # motors max velocity, Knowledge Base 
     
-    Drive.logging_level = log_level.OFF             # will shut off logging, more to coem about my logging
+    Drive.logging_level = log_level.ALL             # will shut off logging, more to coem about my logging
     Drive.log_source_filter = ''                    # defined a lof handle filter, '' is no filter. 
 
     #Drive.use_linegraph = True                     # True turns on plotting if movement support this
@@ -96,7 +96,7 @@ def main():                                         # this is the main function.
     # if you need to power single motor you can 
     # create versions of the spinny motor class
     #################################################
-    right_spin = spinny('RTSP', port.D, 235,        # name, motor port, max_deg, all required
+    right_spin = spinny('RTSP', port.D, 230,        # name, motor port, max_deg, all required
             motor_velocity.SPIKE_LARGE_MOTOR,       # max_vel(osity) required  
                                                     # Optional settings, defaulted as shown
             accuracy=1,                             # How close to target is good? range is -1,0,1
@@ -130,56 +130,33 @@ def main():                                         # this is the main function.
     # these are just the calls, to your customized
     # functions. They are defined below the main method
 
-    # Code for 1st Mission
-    gyro_drive('s', target=74, speed=80, request_angle=0)
+    gyro_drive('s', target=100, speed=40)
+    gyro_spin_to_angle(-91)
+    gyro_drive('s', target=82, speed=10, timeout=2)
 
-    # Doing 1st Mission
-    Drive.spin_far_speed = 66
+    turn_left(200, 0.25)
+    right_extension(700, 4)
+    
+    move_forward(-500, 0.15)
+    gyro_spin_to_angle(47)
 
-    gyro_spin_to_angle(325, spin_left=True)
+    #turn_right(400, 1.685)
+    left_lift.run(-100, async_op=True)
+    
+    
+    
+    gyro_drive('d', 30, 30,                            # set drive parameters
+        spinny_list= [left_lift] )        # and pass a list of spinnys
+    #log( log_level.START , 'LFLT', "| Left lift demo started..." )
+    
+    #left_lift.run(-100)
+    #left_lift.reset()
 
-    # Code for 2nd Mission
+    #log( log_level.START , 'LFLT', "| Left lift demo started second time ..." )
+    left_lift.run(11, 60)
+    gyro_spin_to_angle(-30)
 
-    move_forward_duration(300, 0.235)
-
-    turn_left(250, 0.3)
-
-    turn_left(500, 0.15)
-
-    move_forward_duration(-300, 0.35)
-
-    turn_right(300, 0.4)
-
-    # Doing 2nd Mission
-
-    backwards_left(300, 1.2)
-
-    right_extension(-300, 0.37)
-
-    move_forward_duration(300, 0.35)
-
-    turn_right(950, 0.4)
-
-    sleep(0.5)
-
-    right_extension(300, 0.32)
-
-    move_forward_duration(-500, 0.2)
-
-    backwards_left(300, 0.97)
-
-    gyro_spin_to_angle(145)
-
-    move_forward_duration(300, 0.4)
-
-    # Silo()
-    # Silo()
-    # Silo()
-    # Silo()
-
-    # turn_right(300, 0.325)
-
-    # move_forward_duration(1050, 1.5)
+    move_forward_duration(1100, 3)
     
     #sleep(2)
     # in this case we want the arms to move while
@@ -274,15 +251,15 @@ def right_extension(speed, duration):
     motor.stop(port.D)
 
 def backwards_right(speed, duration):
-    motor.run(port.A, -speed)
-    sleep(duration)
-    motor.stop(port.A)
-
-def backwards_left(speed, duration):
     motor.run(port.E, -speed)
-
     sleep(duration)
     motor.stop(port.E)
+
+def backwards_left(speed, duration):
+    motor.run(port.A, -speed)
+
+    sleep(duration)
+    motor.stop(port.A)
 
 def move_forward(speed, distance):
     #Make _distance the distance the sensor picks up from port B
@@ -343,13 +320,6 @@ def m3_attack_the_left_side():
 def m4_the_coup_de_grace():
     # not assigned to anyone. 
     pass
-
-
-def Silo():
-    left_extention(-750, 0.2)
-    sleep(0.3)
-    left_extention(300, 0.2)
-    sleep(0.4)
 
 
 
@@ -444,7 +414,7 @@ class gyro_drive_settings():
     spin_near_speed     = 5                     # when range is <= spin_far_range near, spin slow
 
                                                 # stop at within spin_accuracy 
-    spin_accuracy       = 1.0                   # we are on target+/- this accuracy
+    spin_accuracy       = 2.0                   # we are on target+/- this accuracy
                                                 # the robot has momentum and robot can't stop
                                                 # on a dime so we make accuracy wide.
                                                 # This gives the code time to stop the spin
@@ -516,7 +486,7 @@ class gyro_drive_settings():
 #################################################
 
 
-def gyro_drive( drive_by,                            # d = distance (cm), t = time (sec), s = sonar (Distance Sensor)
+def gyro_drive( drive_by,                            # d = distance, t = time (sec), s = sonar
                 target,                                # distance or time
                 speed,                                # % of power +/- 10 to 100
                 request_angle = None,                # angle to follow +/- 540. See get_yaw
@@ -752,23 +722,13 @@ def gyro_drive( drive_by,                            # d = distance (cm), t = ti
                     ' | passes: ', passes)
                 return                                    # Get out of function, Google: python return
 
+
         elif drive_by == 's':
             current_reading = \
                 distance_sensor.distance(
-                        Drive.distance_sensor_port) * .1
-
+                        Drive.distance_sensor_port) * .1    # distance comes in as integer milimeters
+                                                            # mult by .1 changes it to float centimeters
             closing_speed = speed
-
-            # Two-speed approach: fast then slow
-            slow_down_distance = 15# Switch to slow speed 15cm before target
-            slow_speed = 25# Speed when close to target
-
-            distance_to_target = abs(current_reading - target)
-
-            if distance_to_target < slow_down_distance:
-                closing_speed = slow_speed# Use lower speed
-
-            # Rest of your code continues...
 
             log(log_level.STEP,
                 'GYDR', " | Done",

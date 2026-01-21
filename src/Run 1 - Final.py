@@ -117,7 +117,7 @@ def main():                                        # this is the main function. 
     # gyro_spin_to_angle(51)
 
     # Going Forwards Toward Mission 9 To Do 1st Part
-    gyro_drive('d', target=31, speed=70, request_angle=49)
+    gyro_drive('d', target=31.5, speed=70, request_angle=49)
 
     # Doing First Part Of Mission 9
     gyro_spin_to_angle(-11)
@@ -166,7 +166,7 @@ def main():                                        # this is the main function. 
     gyro_drive('d', target=40, speed=60)
 
     # Aligned To Face Mission 10
-    gyro_spin_to_angle(95)
+    gyro_spin_to_angle(92.5)
 
     # Move Extension Down For Mission 10 Part 1
     right_extension(300, 0.5)
@@ -174,7 +174,9 @@ def main():                                        # this is the main function. 
     # Going Into Mission 10
     gyro_drive('d', target=10, speed=60)
     right_extension(300, 0.2)
-    move_forward_duration(-300, 0.12)
+    move_forward_duration(-300, 0.135)
+
+    gyro_spin_to_angle(100)
 
     # Define The Movement For Moving Both Extensions Down And Doing Both Parts Of Mission 10
     left_lift.run(-10)
