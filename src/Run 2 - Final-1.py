@@ -131,7 +131,7 @@ def main():                                         # this is the main function.
     # functions. They are defined below the main method
 
     # Code for 1st Mission
-    gyro_drive('s', target=73, speed=45)
+    gyro_drive('s', target=74, speed=80, request_angle=0)
 
     # Doing 1st Mission
     Drive.spin_far_speed = 66
@@ -140,9 +140,11 @@ def main():                                         # this is the main function.
 
     # Code for 2nd Mission
 
-    move_forward_duration(500, 0.15)
+    move_forward_duration(300, 0.235)
 
-    turn_left(500, 0.3)
+    turn_left(250, 0.3)
+
+    turn_left(500, 0.15)
 
     move_forward_duration(-300, 0.35)
 
@@ -152,32 +154,32 @@ def main():                                         # this is the main function.
 
     backwards_left(300, 1.2)
 
-    right_extension(-300, 0.4)
+    right_extension(-300, 0.37)
 
-    move_forward_duration(300, 0.3)
+    move_forward_duration(300, 0.35)
 
     turn_right(950, 0.4)
 
     sleep(0.5)
 
-    right_extension(300, 0.35)
+    right_extension(300, 0.32)
 
     move_forward_duration(-500, 0.2)
 
-    backwards_left(300, 1.25)
+    backwards_left(300, 0.97)
 
-    # gyro_spin_to_angle(140)
+    gyro_spin_to_angle(145)
 
-    move_forward_duration(300, 0.5)
+    move_forward_duration(300, 0.4)
 
-    Silo()
-    Silo()
-    Silo()
-    Silo()
+    # Silo()
+    # Silo()
+    # Silo()
+    # Silo()
 
-    turn_right(300, 0.35)
+    # turn_right(300, 0.325)
 
-    move_forward_duration(1050, 1)
+    # move_forward_duration(1050, 1.5)
     
     #sleep(2)
     # in this case we want the arms to move while
@@ -750,13 +752,23 @@ def gyro_drive( drive_by,                            # d = distance (cm), t = ti
                     ' | passes: ', passes)
                 return                                    # Get out of function, Google: python return
 
-
         elif drive_by == 's':
             current_reading = \
                 distance_sensor.distance(
-                        Drive.distance_sensor_port) * .1    # distance comes in as integer milimeters
-                                                            # mult by .1 changes it to float centimeters
+                        Drive.distance_sensor_port) * .1
+
             closing_speed = speed
+
+            # Two-speed approach: fast then slow
+            slow_down_distance = 15# Switch to slow speed 15cm before target
+            slow_speed = 25# Speed when close to target
+
+            distance_to_target = abs(current_reading - target)
+
+            if distance_to_target < slow_down_distance:
+                closing_speed = slow_speed# Use lower speed
+
+            # Rest of your code continues...
 
             log(log_level.STEP,
                 'GYDR', " | Done",
