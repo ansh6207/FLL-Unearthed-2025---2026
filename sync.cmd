@@ -49,8 +49,8 @@ if errorlevel 1 (
     
     REM Check if merge resulted in conflicts
     git diff --name-only --diff-filter=U >nul 2>&1
-    if errorlevel 1 (
-        REM No conflicts - push to main
+    if not errorlevel 1 (
+        REM No conflicts - push to main directly
         echo No conflicts detected. Pushing to main...
         git push origin main
     ) else (
@@ -80,7 +80,7 @@ if errorlevel 1 (
     
     REM However, check if branch is ahead of origin and push if needed
     git rev-list --count origin/main..HEAD >nul 2>&1
-    if errorlevel 1 (
+    if not errorlevel 1 (
         echo Your branch is ahead of origin/main. Pushing commits...
         git push origin main
     )
