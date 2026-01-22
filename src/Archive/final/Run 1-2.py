@@ -50,7 +50,7 @@ def move_extension_up(speed, duration):
 
 # Code for 1st Mission
 
-move_forward(300, 5.25)
+move_forward(300, 5.17)
 
 # Doing 1st Mission
 

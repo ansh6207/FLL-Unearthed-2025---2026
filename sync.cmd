@@ -54,26 +54,48 @@ if errorlevel 1 (
         echo No conflicts detected. Pushing to main...
         git push origin main
     ) else (
-        REM Conflicts detected - create branch and PR
-        echo Merge conflicts detected!
-        echo Creating branch %BRANCH_NAME% for manual review...
+        REM Conflicts detected - resolve binary files automatically by keeping ours
+        echo Merge conflicts detected. Resolving binary file conflicts...
         
-        REM Abort the merge to return to clean state
-        git merge --abort
+        REM Get list of conflicted files
+        for /f "delims=" %%F in ('git diff --name-only --diff-filter=U') do (
+            REM Check if file is binary (.llsp3, .py compiled files, etc)
+            set FILE=%%F
+            if "!FILE:~-6!"==".llsp3" (
+                echo Resolving binary conflict in !FILE! - keeping local version...
+                git checkout --ours "!FILE!"
+                git add "!FILE!"
+            )
+        )
         
-        REM Create and checkout new branch
-        git checkout -b %BRANCH_NAME%
-        
-        REM Push the branch with the new changes (before merge attempt)
-        git add .
-        git push -u origin %BRANCH_NAME%
-        
-        echo.
-        echo MERGE CONFLICT HANDLING:
-        echo - Branch created: %BRANCH_NAME%
-        echo - Push to GitHub to create a Pull Request
-        echo - Please review and manually merge conflicts
-        echo - Visit: https://github.com/ansh6207/FLL-Unearthed-2025---2026/tree/%BRANCH_NAME%
+        REM Check if there are still unresolved conflicts
+        git diff --name-only --diff-filter=U >nul 2>&1
+        if errorlevel 1 (
+            REM Still have text file conflicts - create branch for manual review
+            echo Text file conflicts still present. Creating branch for manual review...
+            
+            REM Abort the merge to return to clean state
+            git merge --abort
+            
+            REM Create and checkout new branch
+            git checkout -b %BRANCH_NAME%
+            
+            REM Push the branch with the new changes (before merge attempt)
+            git add .
+            git push -u origin %BRANCH_NAME%
+            
+            echo.
+            echo MERGE CONFLICT HANDLING:
+            echo - Branch created: %BRANCH_NAME%
+            echo - Push to GitHub to create a Pull Request
+            echo - Please review and manually merge conflicts
+            echo - Visit: https://github.com/ansh6207/FLL-Unearthed-2025---2026/tree/%BRANCH_NAME%
+        ) else (
+            REM All conflicts resolved - complete the merge
+            echo All conflicts resolved. Completing merge...
+            git commit -m "Merge origin/main - auto-resolved binary conflicts"
+            git push origin main
+        )
     )
 ) else (
     echo No new local changes to commit.
