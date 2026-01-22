@@ -126,7 +126,7 @@ def main():                                         # this is the main function.
     gyro_drive('s', target=82, speed=10, timeout=2, request_angle=-91)
 
     turn_left(200, 0.25)
-    right_extension(700, 4)
+    right_extension(700, 2)
     
     #move_forward(-500, 0.15)
     gyro_drive('t', target=0.15, speed=-50)
@@ -138,7 +138,7 @@ def main():                                         # this is the main function.
     
     
     
-    gyro_drive('d', 30, 30, request_angle=46,                           # set drive parameters
+    gyro_drive('d', 30, 30, request_angle=45.5,                           # set drive parameters
         spinny_list= [left_lift] )        # and pass a list of spinnys
     #log( log_level.START , 'LFLT', "| Left lift demo started..." )
     
