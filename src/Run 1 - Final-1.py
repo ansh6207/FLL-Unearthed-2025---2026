@@ -183,7 +183,7 @@ def main():                                        # this is the main function. 
     gyro_spin_to_angle(100)
 
     # Define The Movement For Moving Both Extensions Down And Doing Both Parts Of Mission 10
-    left_lift.run(-10, async_op=True)
+    left_lift.run(-13, async_op=True)
     right_lift.run(54, async_op=True)
 
     # Running That
