@@ -9,9 +9,13 @@ from sys import exit
 # spike classes
 from hub import port            # Hub Port enums
 from hub import motion_sensor
+from hub import light
+from hub import light_matrix
+from hub import button
 import motor
 import motor_pair
 from app import linegraph
+from app import display        # use in my test methods
 
 import distance_sensor
 import color_sensor
@@ -19,9 +23,10 @@ import color                    # color enums
 
 
 import motor, time
-from hub import port
+from hub import port, sound
 
-SLEEP_MOTOR = 0.3
+sleep = 0.3
+
 
 
 ####################################################
@@ -65,6 +70,7 @@ def main():                                        # this is the main function. 
                                                     # to bottom.
 
     global Drive, front_lift                        # Captures Drive and front_lift above as global in main
+    #global back_lift, my_little_pony_lift        # You can put them on seperate lines.
 
     # build the settings class, now called Drive.# there are other values that you manually set.
     Drive = gyro_drive_settings(5.57,            # wheel diameter, adjust as you need for accuracy
@@ -73,7 +79,7 @@ def main():                                        # this is the main function. 
                                 port.E,            # measure motor port, normally drives forward
                 motor_velocity.SPIKE_MEDIUM_MOTOR)# motors max velocity, Knowledge Base
 
-    Drive.logging_level = log_level.OFF            # will shut off logging, more to coem about my logging
+    Drive.logging_level = log_level.ALL            # will shut off logging, more to coem about my logging
     Drive.log_source_filter = 'LFLT'                    # defined a lof handle filter, '' is no filter.
 
     #Drive.use_linegraph = True                    # True turns on plotting if movement support this
@@ -83,6 +89,15 @@ def main():                                        # this is the main function. 
     motor_pair.pair(Drive.motor_pair_id,            # Drive motors are assigned to motor_pair
                     Drive.motor_port_left,        # we use motor_pair on our drive motors
                     Drive.motor_port_right)        # with this we can start and stop them together.
+
+                                                    # Tests Remove or comment out when done testing
+    #tests = gyro_drive_tests(speed=100, loops=1)            # on a new line type tests. to see the available tests
+    #tests.yaw_demo(180)                            # turn robot to see yaw and correction.
+    #tests.yaw_test_graph()                        # look to presentations for all available tests
+    #tests.drive_torture_test()
+    #return# uncomment to stop here                # program will stop here, comment out when done
+    #tests.drive_test_rectangle()
+    #return
 
 
     #################################################
@@ -107,6 +122,13 @@ def main():                                        # this is the main function. 
             close_speed=60)                        # What speed to use when close.
                                                     # using default on all other options.
 
+
+
+    # spinny tests                                # spinny tests - comment out or delete when done.
+    #front_lift.test([100], loops=1)                # This will rest you arm be prepared to stop.
+    #front_lift.test([ -75, -100, -0], speed=20, loops=1) # This will run throught several positions
+    #return# uncomment to stop here                # program will stop here, comment out when done
+
     #################################################
     # your code goes under here.
     # these can be movements or functions you create
@@ -116,15 +138,10 @@ def main():                                        # this is the main function. 
     # these are just the calls, to your customized
     # functions. They are defined below the main method
 
-<<<<<<< HEAD
     # Right = Up
     # Left = Down
 
     # Do First Part of Mission 1
-=======
-    move_backward(515, 1.5) # move towards mission 1 and completes 1/3 of it
-    #gyro_drive('d', target=41, speed=-100, request_angle=0)
->>>>>>> origin/main
 
     move_backward(510, 1.5)
 
@@ -136,49 +153,23 @@ def main():                                        # this is the main function. 
 
     # Turn Toward Mission 2
 
-<<<<<<< HEAD
     backwards_left(455, 1.5)
 
     # Move Extension Down Before Doing 1st Part Of Mission 2
 
     left_lift.run(-106, 100)
-=======
-    time.sleep(SLEEP_MOTOR)
-
-    gyro_drive('d', 16) # move to revel one part of map
-
-    time.sleep(SLEEP_MOTOR)
-
-    turn_right(100, 0.29) # just in case, turn right
-
-    turn_left(100, 0.2) # just in case, turn right
-
-    left_lift.run(-90, 60, accuracy_override=1, close_degrees_override=80, close_speed_override=8)
-
-    time.sleep(SLEEP_MOTOR) # motor wait
->>>>>>> origin/main
     
     #left_attachment(200, 0.67)
 
     # Do 1st Part Of Mission 2
 
-<<<<<<< HEAD
     gyro_drive('d', target=15, speed=60)
 
     # Move Extension Up a Bit
-=======
-    time.sleep(SLEEP_MOTOR)
-
-    gyro_drive('d', target=4.5, speed=10) # revels other part of map
->>>>>>> origin/main
 
     left_lift.run(20)
 
-<<<<<<< HEAD
     # Get Out of There
-=======
-    time.sleep(SLEEP_MOTOR)
->>>>>>> origin/main
 
     #move_backward(500, 2)
 
@@ -188,7 +179,6 @@ def main():                                        # this is the main function. 
 
     '''left_lift.run(-20, 100)
 
-<<<<<<< HEAD
     gyro_drive('d', target=10, speed=60)
     # Come Home
 
@@ -218,25 +208,28 @@ def main():                                        # this is the main function. 
 
 
     #gyro_drive('d', 50, -30, spinny_list= [front_lift, rear_lift] )
-=======
-    left_lift.run(-103, 60, accuracy_override=1, close_degrees_override=80, close_speed_override=8, async_op=True) # puts arm up
-
-    #spinny.spin_multi_motors([left_lift])
-
-    gyro_drive('d', target=26, speed=40, spinny_list=[left_lift])
-
-    gyro_spin_to_angle(243)
-
-    gyro_drive('d', target=3.45, speed=40)
-
-    time.sleep(SLEEP_MOTOR)
-
-    left_attachment(-100, 0.7)
-    
-    #left_lift.run(-5, 5, accuracy_override=5, close_degrees_override=80, close_speed_override=8, stop_mode_override=motor.BRAKE) # puts arm up slowly
->>>>>>> origin/main
 
     exit(0)
+
+    #while True:
+    #    front_lift.run(0,20, async_op = True)
+    #    rear_lift.run(0,20, async_op = True)
+
+    #    if front_lift.result_code != front_lift.RUNNING and \
+    #    rear_lift.result_code != rear_lift.RUNNING:
+    #        break
+
+    
+
+
+    #m1_Attack_the_left()    # Mark and Andrew
+
+    #m2_go_for_the_center()    # Linda and Anne
+
+    #m3_attack_the_left_side() # Jaylin and Sasha
+
+    #m4_the_coup_de_grace()    # not assigned
+    #return
 
     ################################################################
     # end of main function.
@@ -404,9 +397,9 @@ class gyro_drive_settings():
     color_sensor_port    = -1                # must be set when using color sensor
 
     # test these spin settings to fit your robot.
-    spin_far_range    = 30                    # degrees from target where we spin fast
-    spin_far_speed    = 35                    # when range is > spin_far_range, spin faster
-    spin_near_speed    = 8                    # when range is <= spin_far_range near, spin slow
+    spin_far_range    = 25                    # degrees from target where we spin fast
+    spin_far_speed    = 20                    # when range is > spin_far_range, spin faster
+    spin_near_speed    = 5                    # when range is <= spin_far_range near, spin slow
 
                                                 # stop at within spin_accuracy
     spin_accuracy    = 2.0                # we are on target+/- this accuracy
@@ -419,17 +412,17 @@ class gyro_drive_settings():
     # speed defaults - experimant on your design.
     # you do not need to use these
     # just here as suggestions.
-    default_speed        = 70                    # you set to what you want.
+    default_speed        = 60                    # you set to what you want.
                                                 # use Drive.default_speed in functions to use this
     default_rev_speed= default_speed        # determine this by testing.
 
-    min_speed            = 12                    # minimum drive speed so we don't get stuck
+    min_speed            = 10                    # minimum drive speed so we don't get stuck
                                                 # gyro_drive asks for speed. As we get close
                                                 # the speed man be very low. This will be the
                                                 # minimum. Hey, robot has to move, right!!!
                                                 # speed is 0 to 100 percent of max velocity.
 
-    settle_time        = .20                    # once we reach the target, pause to let the robot settle
+    settle_time        = .30                    # once we reach the target, pause to let the robot settle
                                                 # a heavier robot may need a little more time
 
     # gyro yaw settings
@@ -438,7 +431,7 @@ class gyro_drive_settings():
                                                 # you need to be careful around +/- 540
 
 
-    yaw_adjust        =.7                # A multiplier to adjust your motors to move back to the
+    yaw_adjust        =.5                # A multiplier to adjust your motors to move back to the
                                                 # gyro heading when we are using the gyro.
                                                 #.5 one half of correction, gentle nudge works best
                                                 # 1.0 is no additional adjustment, correction is applied as is
@@ -449,10 +442,10 @@ class gyro_drive_settings():
                                                 # Google: overcorrection
 
     # acceleration parameters
-    accel_ramp_up_dist_pct= .12            # this is multipled by speed to figure out
+    accel_ramp_up_dist_pct= .18            # this is multipled by speed to figure out
                                                 # how large to make the ramp up and down distance.
 
-    accel_min_ramp_up_dist= 1.5            # minimum ramp up distance. 2.0 cm is 4/5 of an inch.
+    accel_min_ramp_up_dist= 2.0            # minimum ramp up distance. 2.0 cm is 4/5 of an inch.
 
 
 
@@ -482,10 +475,10 @@ class gyro_drive_settings():
 
 
 def gyro_drive( drive_by,                            # d = distance, t = time (sec), s = sonar
-                target,                              # distance or time
-                speed = 70,         # % of power +/- 10 to 100
+                target,                                # distance or time
+                speed,                                # % of power +/- 10 to 100
                 request_angle = None,                # angle to follow +/- 540. See get_yaw
-                                                     # if None, gyro correction and turn_first are ignored
+                                                        # if None, gyro correction and turn_first are ignored
 
                 timeout=None,                        # time sec to stop is not completed.
                 waypoint = None,                        # color to look for. Will stop at the color.
@@ -501,7 +494,7 @@ def gyro_drive( drive_by,                            # d = distance, t = time (s
                                                         # type d, distance in centimeters
                                                         # type t, elapsed time
                                                         # type s, sonar distance in centimeters
-    #Drive.logging_level = log_level.ALL
+    Drive.logging_level = log_level.ALL
 
     yaw = actual_yaw = 0                                # set here so no errors down below
                                                         # yes this is ok
@@ -1429,6 +1422,344 @@ def log(msg_level, source, *args):                    # args is the rest of the 
 # End of gyro drive functions
 ############################################
 
+#####################################################################
+# Gyro Drive Test class
+# this nicely encapsulates all the tests
+#####################################################################
+
+class gyro_drive_tests:
+
+    # this is the class constructor that builds this instance
+    # these value are passed to the individual tests.
+    # soem fo the tests allow you to enter an override.
+    def __init__(self, speed = 50, length = 50,
+            request_angle=0, loops=2, rev_speed = 30):
+        self.speed = speed
+        self.length = length
+        self.loops = loops
+        self.request_angle = request_angle
+        self.rev_speed = rev_speed
+
+    def time_demo(self):
+
+        """
+        Shows you how we manipulate time on the robot.
+        It really is more like seconds as our missions do
+        not last very long.
+
+        There are no parameters. It will show you how we
+        calculate seconds since the beginning of the program,
+        since the beginning of a function.
+
+        """
+
+        time.sleep(5)
+        print('Showing Program Time ------------------------')
+        for p in range(0,3):
+            print("Pass: ", p )
+            current_sec= get_hub_sec()                                # capture current system seconds
+            print("Current sec:", current_sec)
+            print("Current min:", current_sec/60)                    # convert sec into minutes
+            print("PGMStartSec:", Drive.program_started_sec)
+            elapsed_sec = get_elapsed_sec( Drive.program_started_sec)
+            print("elapsed Seconds:" , elapsed_sec)
+            print("sleeping for 1")
+            print("")
+            time.sleep(1)
+
+
+        # creating our own local timer                                # gyro_drive uses this idea to allow you
+                                                                        # to drive over a designated time
+                                                                        # and supports the timeout feature
+
+        local_start_sec = get_hub_sec()                                # new local starting point
+        print('LocalTimer Start:')
+        print("Sleep for 4.5")
+        time.sleep(4.5)
+
+        current_sec=get_hub_sec()
+        elpased_sec = get_elapsed_sec(local_start_sec)                # this get different from when
+        print("CurrentSec..:", current_sec)
+        print("PGM Start Sec.:", Drive.program_started_sec)
+        print("Local Elap Sec:", elpased_sec)
+        print("PGM Elaps Sec.:",
+                current_sec - Drive.program_started_sec )
+
+        print('Done..')
+
+
+    def spin_to_angle_test(self, req_angle = None, sleep_duration = 2):
+        """
+        Shows you how the robot can accuratly spin to many
+        angles.
+
+        Parameters:
+        req_angle: (default None) A specific angle you would
+                        like to see it spin to. This will help you
+                        understand the, 180, and 360 degree compasses.
+
+                        If None it will spin to many angles as
+                        specified in the list of angles below.
+
+                        If Drive.use_yaw_360 = True, you will see the
+                                full list of angles.
+
+                        If Drive.use_yaw_360 = False, you will see the
+                                smaller list
+
+        sleep_duration:This is defaulted to 2 seconds. You can change
+                            this to pause longer between angle chamges.
+
+        Returns:
+        Nothing
+
+        """
+
+        global Drive
+
+        angle_list = [0]
+
+        if req_angle is not None:
+            req_angle = abs(req_angle)                    # force it positive
+            if req_angle < 180:                            # easier if it is positive
+                Drive.use_yaw_360 = False
+            else:
+                Drive.use_yaw_360 = True
+
+            using_message = "angle: +/- " + \
+                                str(req_angle) + ' only!'# build a message fro where we are
+
+            angle_list = [req_angle, req_angle * -1, 0 ]    # build a list of angels based upon the
+                                                            # angle that was passed
+
+        elif Drive.use_yaw_360 == False:                    # show 180 degree compass
+                                                            # we included 179 and -179 to show
+                                                            # what happwns if you get too close
+                                                            # to 180 degerees.
+            angle_list = [45, -45, 90, -90, 135, -135, 180, -180, 0] # hit 180 and it goes spinny!!!!
+            using_message = "180 compass"
+            print(using_message)
+        else:
+            angle_list = [45, -45, 90, -90, 135, -135,
+                        180, -180, 270, -270, 360, -360,
+                        390,-390, 450, -450, 0]            # list of angle Google: python list
+            using_message = "360+ compass"
+            print(using_message)
+
+        display.text("Using " + using_message)
+        time.sleep(2)
+
+
+        for angle in angle_list :                        # loop though all the angles
+            display.text("Spin to Angle: " + str(angle) )
+            gyro_spin_to_angle(angle)                    # call the function
+
+            yaw, actual_yaw = get_yaw(angle)                # now we get the yaw.
+            display.text("At angle: " + str(angle) +
+                        ' Yaw:' + str(yaw) +
+                        ' actual_yaw: ' + str(actual_yaw) )
+
+            light_matrix.write(str(yaw))                    # show the yaw on the light display
+
+            print("At angle: " + str(angle) +
+                    ' | Yaw: ' + str(yaw) +
+                    ' (' + str(actual_yaw) + ')' )
+            time.sleep(sleep_duration)
+
+        display.text("Done...")
+
+
+
+    def yaw_test_graph(self,reset=True):
+
+        """
+        Creates a line graph of the gyro yaw settings.
+        This runs for 60 seconds and will show you if there
+        is any drift in the Gyro Yaw value.
+
+        Parameters:
+        reset (bool):True / False to reset the yaw before
+                        you graph. It has a default of True. So
+                        if you call yaw_test_graph(), reset it
+                        set to True.
+
+
+        Returns:
+        Nothing
+
+        """
+
+        msg = """
+        yaw_test_graph():
+            Test started DO NOT TOUCH THE ROBOT DURING THE TEST.
+            It is getting the yaw once a second for sixty (60)
+            seconds to see if your yaw is drifting at all.
+            DON'T PANIC - There are ways to fix it.
+        """
+        print( msg )
+
+        function_start_sec = get_hub_sec()                # capture the start point
+
+        Drive.use_linegraph = True                        # trun on the line graph
+        linegraph.clear_all()                            # turn on line graph and clear it
+
+        if reset == True:                                # test to see if reset is True
+            motion_sensor.reset_yaw                        # if True, reset the motion sensor.
+                                                            # 0 degrees will be whatever position the
+                                                            # robot is in.
+
+        for i in range(61):                                # Google: Python for loop
+                                                            # Google: python range
+            if i > 0 :                                    # skip sleep if i=0, capture a base measure at 0
+                time.sleep(1)                                    # then wait 1 sec before each test
+
+
+            robot_angles = motion_sensor.tilt_angles()    # Returns a tuple containing yaw, pitch and roll
+                                                            # values as integers. Values are decidegrees
+                                                            # Google: python tuple
+            raw_yaw = robot_angles[0]/10                    # yaw [0] is the first item in the tuple.
+                                                            # /10 shifts it right to degrees
+                                                            # 104 converted into 10.4 degrees
+
+            raw_yaw *= -1                                # we flip yaw so we match what block does.
+            int_yaw = int(raw_yaw)                        # integer version of yaw, no decimal
+            rnd_yaw =round(raw_yaw)                        # what do this mean? we rounded it. Google it
+
+            elapsed_sec = get_elapsed_sec(function_start_sec) # get seconds since function started
+            elapsed_sec = int(elapsed_sec)                # convert elapsed_sec into an integer
+                                                            # so no decimal to make graph messy
+
+            linegraph.plot(color.RED,    elapsed_sec, raw_yaw)# raw
+            linegraph.plot(color.GREEN,elapsed_sec, rnd_yaw)# rounded?Google: python round
+            linegraph.plot(color.PURPLE, elapsed_sec, int_yaw)# as an integer (no decimal)
+
+            if i > 0 :
+                print("Elapsed Sec: " + str( elapsed_sec))
+
+
+        linegraph.show(True)
+
+
+    def drive_accuracy_test(self):
+
+        """
+        This test is designed to see if your settings will
+        accuratly drive the requested distance in both forward
+        and reverse speed. This is becasue some heaver robots
+        will not handle fast speeds in reverse.
+
+        Experiment with Wheel diameter to dial in your robot's
+        values to meet the marks.
+
+        """
+
+        rev_speed = abs(self.rev_speed)                            # make it positive, we will fix below.
+
+        if self.rev_speed > 40:
+            print('Warning: High reverse speeds can cause')
+            print(' overcorrection!!!!Test, Test, Test')
+
+        for l in range(0, self.loops):                            # Google: python for loop
+            print('DACC: loop:',l+1, ' of ', self.loops )
+            print("Forward>>>>")
+            time.sleep(1)                                                # python version of sleep
+            gyro_drive( 'd', self.length, self.speed, 0 )
+            print("Reverse<<<<")
+            time.sleep(1)    # python version of sleep
+            gyro_drive( 'd', self.length, -self.rev_speed, 0 )    # lower speed back for accuracy
+        print("Done")
+
+    def drive_test_rectangle(self):
+
+        Drive.use_yaw_360 = True
+
+        for i in range(0, self.loops):
+            gyro_drive( 'd',200, self.speed,0)    # leg 1, straight at 0 degrees
+            gyro_drive( 'd', 100, self.speed, -90)    # leg 2, turn left or -90 degrees
+            gyro_drive( 'd', 200, self.speed,-180)    # leg 3, turn to -180, head west
+            gyro_drive( 'd', 100, self.speed,-270)    # leg 4, turn right and drive to starting point
+            gyro_spin_to_angle(0)
+
+    def drive_test_square(self):
+
+        Drive.use_yaw_360 = True
+
+        for i in range(0, self.loops):
+            gyro_drive( 'd', 50, self.speed,0)    # leg 1, straight at 0 degrees
+            gyro_drive( 'd', 50, self.speed, -90)    # leg 2, turn left or -90 degrees
+            gyro_drive( 'd', 50, self.speed,-180)    # leg 3, turn to -180, head west
+            gyro_drive( 'd', 50, self.speed,-270)    # leg 4, turn right and drive to starting point
+            gyro_spin_to_angle(0)                    # leg 5, turn to starting direction, o degrees
+
+
+    def drive_torture_test(self):                # drive the torture test
+
+        Drive.use_yaw_360 = True
+
+        diag_distance = 71.5
+
+        # start pointing east
+        for i in range(0,self.loops):
+            gyro_drive( 'd', 25, self.speed,0)    # Go eastfor 25
+            gyro_drive( 'd', 50, self.speed, -90)    # go north for 50
+            gyro_drive( 'd', 25, self.speed,0)    # Go eastfor 25
+            gyro_drive( 'd', 50, self.speed,90)    # Go south for 50
+            gyro_drive( 'd', 25, self.speed, 180)    # go westfor 25
+            gyro_drive( 'd', 50, self.speed, -90)    # go north for 50
+            gyro_drive( 'd', 25, self.speed, 180)    # go westfor 25
+            gyro_drive( 'd', 50, self.speed,90)    # go south for 50
+            gyro_drive( 'd', 50, self.speed,0)        # Go east for 50
+            gyro_drive( 'd', diag_distance,
+                                    self.speed,-135)# Go north-west for 71.5
+            gyro_drive( 'd', 50, self.speed,0)        # Go east for 50
+            gyro_drive( 'd', diag_distance,
+                                    self.speed, 135)# Go south-west for 71.5
+            gyro_spin_to_angle(0)                    # return to 0 degrees
+
+
+    def yaw_demo(self, request_angle = 0):
+
+        msg = """
+        Manually move the robot slowly in each direction.
+        The console will print the yaw and actual_yaw changes.
+        It will sleep for 1 second between printouts.
+        Parameter:request_angle - What angle +/-540 deg. do you
+                    want to test? Default is 0.
+            Angle below +/- 135 deg. shows 180 deg. compass.
+            Angle above +/- 135 deg. shows 360 deg. compass.
+        """
+
+        print(msg)
+
+        request_angle = int(request_angle)                # make sure our tests work
+
+        while True:
+            time.sleep(1)
+            yaw, actual_angle = get_yaw(request_angle)
+            yaw = int(yaw)
+
+            msg = "yaw_demo: target " + str(request_angle) + \
+                    ", yaw: " + str(yaw) + \
+                    " (actual " + str(actual_angle) + ')'
+
+            correction = int(yaw - request_angle)            # how far to get to the req angle.
+
+            if correction > 0:
+                msg += " << " + str(abs(correction)) + " dg." # abs -show correction w/o a sign.
+            elif correction < 0:
+                msg += " >> " + str(abs(correction)) + " dg."
+            else :
+                msg += " ON TARGET!!!"
+
+
+            print( msg )
+
+
+
+###################################
+# End gyro_drive_test Class
+###################################
+
 #################################################
 # spinny Class
 # Designed to drive 1 motor to spin to
@@ -1487,6 +1818,40 @@ class spinny:
 
     def get_motor_port(self):
         return self.motor_port                                # return the class motor port for other methods
+
+    def test(self, position_list, speed=30, loops=1 ):        # allows you to see how far it will move.
+
+        Drive.logging_level = log_level.ALL                    # allow us to see all log levels.
+        Drive.log_source_filter = 'TEST'                        # while running only show 'TEST' logs
+        # we replaced handle with 'TEST'                        # this will silence all the others.
+        # so it is the only log to show.
+        log( log_level.START , 'TEST', "| Demo started..." )
+
+
+        self.reset()                                            # reset motor relative position
+        for p in range(0,loops):                                # perfrom the x many loops
+            log( log_level.START , 'TEST',
+                "Pass: ", p+1, " of ", loops)
+
+            for position in position_list:                    # loop through the positions
+
+                log( log_level.STEP ,'TEST',
+                    " | To pos: " , position , "%",
+                    " (want ",
+                    calc_pct_value(self.max_degrees,
+                        position),
+                    " | At speed ", speed)
+
+                self.run(position, speed)                    # run spinny, position% of degrees
+
+                time.sleep(2)
+
+                log( log_level.END ,'TEST',
+                    " | At pos: " , position , "%",
+                    " (actual ", self.get_relative_pos(),
+                    ' deg.) of +/- ', self.max_degrees,
+                    " deg.")
+                time.sleep(2)
 
 
     def spin_motor(self):
