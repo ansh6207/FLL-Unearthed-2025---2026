@@ -117,17 +117,21 @@ def main():                                        # this is the main function. 
     # gyro_spin_to_angle(51)
 
     # Going Forwards Toward Mission 9 To Do 1st Part
-    gyro_drive('d', target=31.5, speed=70, request_angle=49)
+    gyro_drive('d', target=31, speed=70, request_angle=50)
 
     # Doing First Part Of Mission 9
-    gyro_spin_to_angle(-11)
+    Drive.spin_far_speed = 30
+    gyro_spin_to_angle(-12)
 
     # Bringing Arm Up A Bit
-    left_lift.run(95, speed=60)
+    left_lift.run(95, speed=35, async_op=True)
+    spinny.spin_multi_motors([left_lift])
 
     # Sleeping And Turning Back To Face Roof (Part 2) Of Mission 9
     #sleep(0.2)
+    Drive.spin_far_speed = 30
     gyro_spin_to_angle(47)
+    Drive.spin_far_speed = 20
 
     # Move Extension Down For Doing Part 2 Of Mission 9
     #right_lift.run(95, speed=50, accuracy_override=1, close_degrees_override=80, close_speed_override=8)
@@ -174,20 +178,21 @@ def main():                                        # this is the main function. 
     # Going Into Mission 10
     gyro_drive('d', target=10, speed=60)
     right_extension(300, 0.2)
-    move_forward_duration(-300, 0.135)
+    move_forward_duration(-300, 0.139)
 
     gyro_spin_to_angle(100)
 
     # Define The Movement For Moving Both Extensions Down And Doing Both Parts Of Mission 10
-    left_lift.run(-10)
+    left_lift.run(-10, async_op=True)
+    right_lift.run(54, async_op=True)
 
     # Running That
-    #spinny.spin_multi_motors(motor_list=[left_lift])
+    spinny.spin_multi_motors(motor_list=[left_lift, right_lift])
 
     # Sleeping To Give 
     sleep(0.5)
 
-    right_extension(-300, 0.8)
+    #right_extension(-300, 0.8)
     move_forward_duration(-300, 0.7)
     turn_left(600, 0.5)
     move_forward_duration(-1000,3.3)
