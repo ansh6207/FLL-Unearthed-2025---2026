@@ -171,9 +171,9 @@ def main():                                        # this is the main function. 
 
     gyro_drive('d', target=26, speed=40, spinny_list=[left_lift])
 
-    gyro_spin_to_angle(243)
+    gyro_spin_to_angle(241)
 
-    gyro_drive('d', target=3.45, speed=40)
+    gyro_drive('d', target=3.3, speed=40)
 
     time.sleep(SLEEP_MOTOR)
 
