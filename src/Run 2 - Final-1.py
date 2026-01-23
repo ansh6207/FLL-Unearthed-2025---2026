@@ -115,7 +115,7 @@ def main():                                         # this is the main function.
     # functions. They are defined below the main method
 
     # Code for 1st Mission
-    gyro_drive('s', target=74, speed=80, request_angle=0)
+    gyro_drive('s', target=74.5, speed=80, request_angle=0)
 
     # Doing 1st Mission
     Drive.spin_far_speed = 66
@@ -124,11 +124,9 @@ def main():                                         # this is the main function.
 
     # Code for 2nd Mission
 
-    move_forward_duration(300, 0.235)
+    move_forward_duration(300, 0.2)
 
-    turn_left(250, 0.3)
-
-    turn_left(500, 0.15)
+    turn_left(500, 0.3)
 
     move_forward_duration(-300, 0.35)
 
@@ -138,7 +136,7 @@ def main():                                         # this is the main function.
 
     backwards_left(300, 1.2)
 
-    right_extension(-300, 0.37)
+    right_extension(-300, 0.35)
 
     move_forward_duration(300, 0.35)
 
@@ -152,18 +150,18 @@ def main():                                         # this is the main function.
 
     backwards_left(300, 0.97)
 
-    gyro_spin_to_angle(145)
+    gyro_spin_to_angle(144)
 
     move_forward_duration(300, 0.4)
 
-    # Silo()
-    # Silo()
-    # Silo()
-    # Silo()
+    Silo()
+    Silo()
+    Silo()
+    Silo()
 
-    # turn_right(300, 0.325)
+    turn_right(300, 0.325)
 
-    # move_forward_duration(1050, 1.5)
+    move_forward_duration(1050, 1.5)
 
     exit(0)
 
@@ -242,9 +240,9 @@ def move_forward(speed, distance):
 
 
 def Silo():
-    left_extention(-750, 0.2)
+    left_extention(-750, 0.16)
     sleep(0.3)
-    left_extention(300, 0.2)
+    left_extention(300, 0.16)
     sleep(0.4)
 
 
