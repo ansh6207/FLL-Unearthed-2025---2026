@@ -1,7 +1,7 @@
 ﻿# MicroPython classes           # Google: what is a python class
 # here we only import parts     # Google: python what is importing?
 # of the time object
-from time import ticks_ms       # Google: python time.ticks_ms
+from time import ticks_ms, time       # Google: python time.ticks_ms
 from time import sleep          # Google: python time.sleep
 from sys import exit
 
@@ -123,7 +123,8 @@ def main():                                         # this is the main function.
 
     gyro_drive('s', target=101, speed=80, request_angle=0)
     # gyro_spin_to_angle(-91)
-    gyro_drive('s', target=82, speed=10, timeout=2, request_angle=-91)
+    #gyro_drive('s', target=80, speed=5, request_angle=-91)
+    gyro_drive('d', target=3, speed=5, request_angle=-91)
 
     turn_left(200, 0.25)
     right_extension(700, 2)
@@ -138,7 +139,7 @@ def main():                                         # this is the main function.
     
     
     
-    gyro_drive('d', 30, 30, request_angle=45.5,                           # set drive parameters
+    gyro_drive('d', 30, 30, request_angle=45,                            # set drive parameters
         spinny_list= [left_lift] )        # and pass a list of spinnys
     #log( log_level.START , 'LFLT', "| Left lift demo started..." )
     
@@ -154,7 +155,7 @@ def main():                                         # this is the main function.
     #sleep(2)
     # in this case we want the arms to move while
     # we drive. This can save a lot of time.
-    # asunc_op says do not spin the motors youself.
+    # async_op says do not spin the motors youself.
     #front_lift.run(100,25, async_op = True)             #set front to go up
     #rear_lift.run(100,10, async_op = True)              #set back to go up
 
