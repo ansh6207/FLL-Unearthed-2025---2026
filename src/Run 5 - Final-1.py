@@ -21,7 +21,7 @@ import color                    # color enums
 import motor, time
 from hub import port
 
-SLEEP_MOTOR = 0.3
+SLEEP_MOTOR = 0.1
 
 
 ####################################################
@@ -115,11 +115,19 @@ def main():                                        # this is the main function. 
     #################################################
     # these are just the calls, to your customized
     # functions. They are defined below the main method
+    
+    Drive.accel_ramp_up_dist_pct = 0.05
+    Drive.accel_min_ramp_up_dist = 1.5
+    Drive.settle_time = 0.1
+    Drive.spin_far_speed = 50
+    Drive.spin_near_speed = 10
 
     move_backward(515, 1.5) # move towards mission 1 and completes 1/3 of it
-    #gyro_drive('d', target=41, speed=-100, request_angle=0)
+    #gyro_drive('d', target=44, speed=-100, request_angle=0)
 
     move_forward(600, 0.8) # completes other 1/3 of mission 1
+    #gyro_drive('d', target=36, speed=100, request_angle=0)
+
 
     move_backward(600, 0.6) # just in case first soil deposit doesn't work
 
@@ -129,11 +137,11 @@ def main():                                        # this is the main function. 
 
     left_lift.run(-102, 60, accuracy_override=1, close_degrees_override=80, close_speed_override=8) # puts arm down
 
-    time.sleep(SLEEP_MOTOR)
+    #time.sleep(SLEEP_MOTOR)
 
     gyro_drive('d', 16) # move to revel one part of map
 
-    time.sleep(SLEEP_MOTOR)
+    #time.sleep(SLEEP_MOTOR)
 
     turn_right(100, 0.29) # just in case, turn right
 
@@ -141,19 +149,19 @@ def main():                                        # this is the main function. 
 
     left_lift.run(-90, 60, accuracy_override=1, close_degrees_override=80, close_speed_override=8)
 
-    time.sleep(SLEEP_MOTOR) # motor wait
+    #time.sleep(SLEEP_MOTOR) # motor wait
     
     gyro_spin_to_angle(163) # turn to go over to position over the sliding garden
 
     left_lift.run(-100, 50, accuracy_override=1, close_degrees_override=80, close_speed_override=8) # puts arm down
 
-    time.sleep(SLEEP_MOTOR)
+    #time.sleep(SLEEP_MOTOR)
 
     gyro_drive('d', target=4.5, speed=10) # revels other part of map
 
     left_lift.run(-90, 50, accuracy_override=1, close_degrees_override=80, close_speed_override=8) # puts arm up
 
-    time.sleep(SLEEP_MOTOR)
+    #time.sleep(SLEEP_MOTOR)
 
     gyro_spin_to_angle(180) #colect garden
 
@@ -171,11 +179,11 @@ def main():                                        # this is the main function. 
 
     gyro_drive('d', target=26, speed=40, spinny_list=[left_lift])
 
-    gyro_spin_to_angle(241)
+    gyro_spin_to_angle(245)
 
-    gyro_drive('d', target=3.3, speed=40)
+    gyro_drive('d', target=3.8, speed=40)
 
-    time.sleep(SLEEP_MOTOR)
+    #time.sleep(SLEEP_MOTOR)
 
     left_attachment(-100, 0.7)
     

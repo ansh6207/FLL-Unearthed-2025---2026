@@ -114,6 +114,12 @@ def main():                                         # this is the main function.
     # these are just the calls, to your customized
     # functions. They are defined below the main method
 
+    Drive.accel_ramp_up_dist_pct = 0.05
+    Drive.accel_min_ramp_up_dist = 1.5
+    Drive.settle_time = 0.1
+    Drive.spin_far_speed = 50
+    Drive.spin_near_speed = 10
+
     # Code for 1st Mission
     gyro_drive('s', target=74.5, speed=80, request_angle=0)
 
@@ -126,7 +132,7 @@ def main():                                         # this is the main function.
 
     move_forward_duration(300, 0.2)
 
-    turn_left(500, 0.3)
+    turn_left(500, 0.4)
 
     move_forward_duration(-300, 0.35)
 
