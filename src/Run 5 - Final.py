@@ -74,7 +74,7 @@ def main():                                        # this is the main function. 
                 motor_velocity.SPIKE_MEDIUM_MOTOR)# motors max velocity, Knowledge Base
 
     Drive.logging_level = log_level.OFF            # will shut off logging, more to coem about my logging
-    Drive.log_source_filter = ''                    # defined a lof handle filter, '' is no filter.
+    Drive.log_source_filter = 'LFLT'                    # defined a lof handle filter, '' is no filter.
 
     #Drive.use_linegraph = True                    # True turns on plotting if movement support this
     if Drive.use_linegraph == True:                # What does this say? easy to understand.
@@ -137,7 +137,7 @@ def main():                                        # this is the main function. 
 
     turn_right(100, 0.29) # just in case, turn right
 
-    turn_left(100, 0.2) # just in case, turn left
+    turn_left(100, 0.2) # just in case, turn right
 
     left_lift.run(-90, 60, accuracy_override=1, close_degrees_override=80, close_speed_override=8)
 
