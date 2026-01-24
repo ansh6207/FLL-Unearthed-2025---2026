@@ -75,7 +75,7 @@ turn_left(300, 0.55)
 
 move_extension_up(300, 0.35)
 
-move_forward(270, 1.25)
+move_forward(270, 1)
 
 turn_right(300, 0.3)
 
@@ -85,7 +85,7 @@ left_attachment(300, 0.5)
 
 # Coming Home
 
-move_backward(1000, 0.8)
+move_backward(1000, 1)
 
 turn_left(900, 0.3)
 
