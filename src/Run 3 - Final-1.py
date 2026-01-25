@@ -121,11 +121,11 @@ def main():                                         # this is the main function.
     # these are just the calls, to your customized
     # functions. They are defined below the main method
 
-    Drive.accel_ramp_up_dist_pct = 0.05
-    Drive.accel_min_ramp_up_dist = 1.5
-    Drive.settle_time = 0.1
-    Drive.spin_far_speed = 50
-    Drive.spin_near_speed = 10
+    # Drive.accel_ramp_up_dist_pct = 0.05
+    # Drive.accel_min_ramp_up_dist = 1.5
+    # Drive.settle_time = 0.1
+    # Drive.spin_far_speed = 50
+    # Drive.spin_near_speed = 10
 
     gyro_drive('s', target=101, speed=80, request_angle=0)
     # gyro_spin_to_angle(-91)

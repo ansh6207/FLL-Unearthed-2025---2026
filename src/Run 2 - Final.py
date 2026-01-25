@@ -130,7 +130,7 @@ def main():                                         # this is the main function.
 
     # Code for 2nd Mission
 
-    move_forward_duration(300, 0.2)
+    move_forward_duration(300, 0.19)
 
     turn_left(500, 0.4)
 
