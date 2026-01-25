@@ -1,0 +1,1 @@
+{"main":"from hub import port\nimport runloop\nimport motor_pair\nimport motor\nfrom time import sleep, sleep_ms\n\nasync def main():\n    await motor.run_for_degrees(port.C, -2600, 1000)\nrunloop.run(main())"}
