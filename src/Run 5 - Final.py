@@ -116,11 +116,11 @@ def main():                                        # this is the main function. 
     # these are just the calls, to your customized
     # functions. They are defined below the main method
     
-    # Drive.accel_ramp_up_dist_pct = 0.05
-    # Drive.accel_min_ramp_up_dist = 1.5
-    # Drive.settle_time = 0.1
-    # Drive.spin_far_speed = 50
-    # Drive.spin_near_speed = 10
+    Drive.accel_ramp_up_dist_pct = 0.05
+    Drive.accel_min_ramp_up_dist = 1.5
+    Drive.settle_time = 0.1
+    Drive.spin_far_speed = 50
+    Drive.spin_near_speed = 10
 
     move_backward(515, 1.5) # move towards mission 1 and completes 1/3 of it
     #gyro_drive('d', target=44, speed=-100, request_angle=0)
@@ -133,13 +133,13 @@ def main():                                        # this is the main function. 
 
     backwards_left(455, 1.43) # turn towards mission 2
 
-    gyro_spin_to_angle(140)
+    gyro_spin_to_angle(141)
 
     left_lift.run(-102, 60, accuracy_override=1, close_degrees_override=80, close_speed_override=8) # puts arm down
 
     time.sleep(SLEEP_MOTOR)
 
-    gyro_drive('d', 16) # move to revel one part of map
+    gyro_drive('d', 16, speed=50) # move to revel one part of map
 
     time.sleep(SLEEP_MOTOR)
 
@@ -159,11 +159,15 @@ def main():                                        # this is the main function. 
 
     gyro_drive('d', target=4.5, speed=10) # revels other part of map
 
-    left_lift.run(-90, 50, accuracy_override=1, close_degrees_override=80, close_speed_override=8) # puts arm up
+    gyro_drive('d', target=1, speed=-10) # revels other part of map
+
+    left_lift.run(-95, 50, accuracy_override=1, close_degrees_override=80, close_speed_override=8) # puts arm up
+    
+    gyro_drive('d', target=1, speed=10) # revels other part of map
 
     time.sleep(SLEEP_MOTOR)
 
-    gyro_spin_to_angle(180) #colect garden
+    gyro_spin_to_angle(180, spin_right=True) #colect garden
 
     move_backward(400, 0.3)
     
@@ -181,7 +185,7 @@ def main():                                        # this is the main function. 
 
     gyro_spin_to_angle(246)
 
-    gyro_drive('d', target=3, speed=40)
+    gyro_drive('d', target=3.5, speed=40)
 
     time.sleep(SLEEP_MOTOR)
 
